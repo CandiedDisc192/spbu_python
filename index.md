@@ -6,5 +6,5 @@ layout: default
 - Студент бакалавриата СПбГУ по направлению «Программная инженерия»
 
 # Контакты
-- email: <Ваш email>
+- email: ermodeti@gmail.com
 - telegram: https://t.me/IcockI
