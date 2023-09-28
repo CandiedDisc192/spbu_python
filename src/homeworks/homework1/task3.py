@@ -73,9 +73,13 @@ if __name__ == "__main__":
 
     elif command == "head" or command == "tail":
         if "-n" in user_parameters:
-            print(head_or_tail_n(given_file, command == "head", int(user_parameters[-1])))
+            print(
+                head_or_tail_n(given_file, command == "head", int(user_parameters[-1]))
+            )
         elif "-c" in user_parameters:
-            print(head_or_tail_c(given_file, command == "head", int(user_parameters[-1])))
+            print(
+                head_or_tail_c(given_file, command == "head", int(user_parameters[-1]))
+            )
         if not user_parameters:
             print(head_or_tail_n(given_file, command == "head"))
 
