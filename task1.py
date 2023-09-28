@@ -1,12 +1,12 @@
 def get_dividers(num):
     dividers = []
     possible_divider = 2
-    while possible_divider ** 2 < num:
+    while possible_divider**2 < num:
         if num % possible_divider == 0:
             dividers.append(possible_divider)
             dividers.append(num // possible_divider)
         possible_divider += 1
-    if possible_divider ** 2 == num:
+    if possible_divider**2 == num:
         dividers.append(possible_divider)
     return sorted(dividers)
 
@@ -29,7 +29,7 @@ def get_irreducible_fractions(max_denominator):
     for denominator in range(max_denominator, 1, -1):
         for numerator in range(1, denominator):
             if not is_reducible(numerator, denominator):
-                current_value = numerator/denominator
+                current_value = numerator / denominator
                 order.append(current_value)
                 decimal_to_normal[current_value] = f"{numerator}/{denominator}"
     order.sort()
@@ -38,6 +38,8 @@ def get_irreducible_fractions(max_denominator):
 
 if __name__ == "__main__":
     n = int(input("Введите число n: "))
-    print("Все простые несократимые дроби в порядке возрастания,"
-          " заключенные между 0 и 1, знаменатели которых не превышают n:")
+    print(
+        "Все простые несократимые дроби в порядке возрастания,"
+        " заключенные между 0 и 1, знаменатели которых не превышают n:"
+    )
     print(*get_irreducible_fractions(n), sep=", ")
