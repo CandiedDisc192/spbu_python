@@ -1,5 +1,5 @@
 def is_prime(num):
-    border = num ** 0.5
+    border = num**0.5
     possible_divider = 2
     while possible_divider <= border:
         if num % possible_divider == 0:
