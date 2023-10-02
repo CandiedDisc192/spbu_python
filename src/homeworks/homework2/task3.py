@@ -1,60 +1,30 @@
 from os.path import exists
 
 
-def find_list_fragment(lst, fragment, searching_start_index=0):
-    length_of_fragment = len(fragment)
-    for i in range(searching_start_index, len(lst) - length_of_fragment + 1):
-        if fragment == lst[i : i + length_of_fragment]:
-            return i, i + length_of_fragment - 1
-
-
-def delete_list_fragment(lst, start_sequence, end_sequence):
-    indexes_of_start = find_list_fragment(lst, start_sequence)
-    indexes_of_end = find_list_fragment(lst, end_sequence, indexes_of_start[1] + 1)
-    return lst[: indexes_of_start[0]] + lst[indexes_of_end[1] + 1 :]
-
-
-def list_insert_fragment(lst, start_sequence, fragment):
-    end_index_of_start = find_list_fragment(lst, start_sequence)[1]
-    return lst[: end_index_of_start + 1] + fragment + lst[end_index_of_start + 1 :]
-
-
-def list_replace_fragment(lst, template, fragment):
-    temporary_list = list_insert_fragment(lst, template, fragment)
-    return delete_list_fragment(temporary_list, template, [])
-
-
 def transform_logs(logs_file_path, transformed_logs_file_path):
-    transforming_file = open(transformed_logs_file_path, "w", encoding="utf-8")
+    transformed_text = ""
     with open(logs_file_path, "r", encoding="utf-8") as logs_f_in:
-        origin_dna_length = int(logs_f_in.readline())
-        raw_dna = logs_f_in.readline()
-        dna = [raw_dna[i] for i in range(origin_dna_length)]
-        logs_count = int(logs_f_in.readline())
+        origin_dna_length, dna, logs_count = (
+            int(logs_f_in.readline()),
+            logs_f_in.readline().rstrip(),
+            int(logs_f_in.readline()),
+        )
         for raw_log_i in range(logs_count):
             log = logs_f_in.readline().split()
             if log[0] == "DELETE":
-                dna = delete_list_fragment(
-                    dna,
-                    [chemical_compound for chemical_compound in log[1]],
-                    [chemical_compound for chemical_compound in log[2]],
-                )
+                start_index = dna.find(log[1])
+                end_index = dna.find(log[2], start_index + len(log[1])) + len(log[2])
+                dna = dna[:start_index] + dna[end_index:]
             elif log[0] == "INSERT":
-                dna = list_insert_fragment(
-                    dna,
-                    [chemical_compound for chemical_compound in log[1]],
-                    [chemical_compound for chemical_compound in log[2]],
-                )
+                insert_index = dna.find(log[1]) + len(log[1])
+                dna = dna[:insert_index] + log[2] + dna[insert_index:]
             elif log[0] == "REPLACE":
-                dna = list_replace_fragment(
-                    dna,
-                    [chemical_compound for chemical_compound in log[1]],
-                    [chemical_compound for chemical_compound in log[2]],
-                )
-            transforming_file.write(
-                "".join(dna) + "\n"
-            ) if raw_log_i != logs_count - 1 else transforming_file.write("".join(dna))
-        transforming_file.close()
+                dna = dna.replace(log[1], log[2], 1)
+            transformed_text += dna + "\n" if raw_log_i != logs_count - 1 else dna
+        with open(
+            transformed_logs_file_path, "w", encoding="utf-8"
+        ) as transforming_file:
+            transforming_file.write(transformed_text)
 
 
 if __name__ == "__main__":
