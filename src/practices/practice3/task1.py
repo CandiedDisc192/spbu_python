@@ -24,16 +24,12 @@ def is_reducible(num1, num2):
 
 
 def get_irreducible_fractions(max_denominator):
-    decimal_to_normal = {}
-    order = []
+    numerators_denominators = []
     for denominator in range(max_denominator, 1, -1):
         for numerator in range(1, denominator):
             if not is_reducible(numerator, denominator):
-                current_value = numerator / denominator
-                order.append(current_value)
-                decimal_to_normal[current_value] = f"{numerator}/{denominator}"
-    order.sort()
-    return [decimal_to_normal[num] for num in order]
+                numerators_denominators.append((numerator, denominator))
+    return sorted(numerators_denominators, key=lambda n_d: n_d[0] / n_d[1])
 
 
 if __name__ == "__main__":
@@ -42,4 +38,4 @@ if __name__ == "__main__":
         "Все простые несократимые дроби в порядке возрастания,"
         " заключенные между 0 и 1, знаменатели которых не превышают n:"
     )
-    print(*get_irreducible_fractions(n), sep=", ")
+    print(*[f"{i}/{j}" for i, j in get_irreducible_fractions(n)], sep=", ")
