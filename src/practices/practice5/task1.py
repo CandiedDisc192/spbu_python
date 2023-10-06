@@ -10,6 +10,10 @@ class Stack:
     head: StackElement
 
 
+def get_new_stack():
+    return Stack(0, None)
+
+
 def empty(stack: Stack):
     return stack.size == 0
 
@@ -37,7 +41,7 @@ def pop(stack: Stack):
 
 
 def main():
-    my_stack = Stack(0, None)
+    my_stack = get_new_stack()
     element1 = 10
     element2 = None
     element3 = "Крутой"
