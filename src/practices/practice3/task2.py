@@ -24,7 +24,9 @@ if __name__ == "__main__":
         if not guess.isdigit() or len(guess) != digits_count:
             print(f"Введите {digits_count}-значное число")
             continue
-        current_bulls, current_cows = get_bulls_and_cows_current_res(guess, random_value)
+        current_bulls, current_cows = get_bulls_and_cows_current_res(
+            guess, random_value
+        )
         if current_bulls == digits_count:
             print("Вы победили!")
             break
