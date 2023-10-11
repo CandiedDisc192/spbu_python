@@ -2,13 +2,13 @@ from random import sample
 
 
 def get_bulls_and_cows_current_res(current_guess, answer):
-    bulls_cows = [0, 0]
+    bulls, cows = 0, 0
     for i in range(len(answer)):
         if current_guess[i] == answer[i]:
-            bulls_cows[0] += 1
+            bulls += 1
         elif current_guess[i] in answer:
-            bulls_cows[1] += 1
-    return bulls_cows
+            cows += 1
+    return bulls, cows
 
 
 if __name__ == "__main__":
@@ -21,9 +21,10 @@ if __name__ == "__main__":
         if guess == "стоп":
             print(f"Вы проиграли, загаданное значение: {random_value}")
             break
-        current_res = get_bulls_and_cows_current_res(guess, random_value)
-        current_bulls = current_res[0]
-        current_cows = current_res[1]
+        if not guess.isdigit() or len(guess) != digits_count:
+            print(f"Введите {digits_count}-значное число")
+            continue
+        current_bulls, current_cows = get_bulls_and_cows_current_res(guess, random_value)
         if current_bulls == digits_count:
             print("Вы победили!")
             break
