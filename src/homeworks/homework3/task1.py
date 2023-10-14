@@ -23,7 +23,7 @@ def uncurry_explicit(function, arity):
         args_count = len(args)
         if args_count != arity:
             raise TypeError(
-                f"curried function takes {arity} positional arguments but {args_count} were given"
+                f"function takes {arity} positional arguments but {args_count} were given"
             )
         arg_inserter = function
         for i in range(args_count):
