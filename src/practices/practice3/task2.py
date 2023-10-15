@@ -38,26 +38,30 @@ def is_guess_valid(cur_guess, digits_number):
     )
 
 
-if __name__ == "__main__":
-    digits_count = get_digits_count()
+def game(answer_len):
     print('Чтобы закончить игру напишите "стоп"')
-    random_value = generate_random_value(digits_count)
+    random_value = generate_random_value(answer_len)
     current_guess_num = 1
     while True:
         guess = input(f"{current_guess_num}. Введите ваше предположение: ")
         if guess == "стоп":
             print(f"Вы проиграли, загаданное значение: {random_value}")
             break
-        if not is_guess_valid(guess, digits_count):
+        if not is_guess_valid(guess, answer_len):
             print(
-                f"Введите {digits_count}-значное число, не содержащее повторяющихся цифр"
+                f"Введите {answer_len}-значное число, не содержащее повторяющихся цифр"
             )
             continue
         current_bulls, current_cows = get_bulls_and_cows_current_res(
             guess, random_value
         )
-        if current_bulls == digits_count:
+        if current_bulls == answer_len:
             print("Вы победили!")
             break
         print(f"Быков: {current_bulls}, коров: {current_cows}")
         current_guess_num += 1
+
+
+if __name__ == "__main__":
+    digits_count = get_digits_count()
+    game(digits_count)
