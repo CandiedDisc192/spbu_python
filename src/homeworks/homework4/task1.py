@@ -1,9 +1,3 @@
-def is_integer(input_num: str):
-    return input_num and (
-        input_num.isdigit() or (input_num[0] in ("-", "+") and input_num[1:].isdigit())
-    )
-
-
 def clean_leading_trash(bin_num: str):
     sign_digit = bin_num[0]
     return sign_digit + bin_num.lstrip(sign_digit)
@@ -20,7 +14,10 @@ def get_positive_bin(num: int):
 
 
 def invert_bin(bin_num: str):
-    return bin_num.replace("1", "t").replace("0", "1").replace("t", "0")
+    inverted = ""
+    for digit in bin_num:
+        inverted += "0" if digit == "1" else "1"
+    return inverted
 
 
 def get_opposite_bin(bin_num: str):
@@ -56,20 +53,20 @@ def get_decimal_representation(bin_num: str):
     for digit in bin_num[::-1]:
         absolute_value += int(digit) * (2**degree)
         degree += 1
-    return f"{'-' if sign else ''}{absolute_value}"
+    return int(f"{'-' if sign else ''}{absolute_value}")
 
 
 def main():
-    user_num1 = input("Enter first integer: ")
-    user_num2 = input("Enter second integer: ")
-
-    if not (is_integer(user_num1) and is_integer(user_num2)):
+    try:
+        user_num1 = int(input("Enter first integer: "))
+        user_num2 = int(input("Enter second integer: "))
+    except ValueError:
         print("Input integer numbers.")
         return
 
     processed_num1, processed_num2 = get_twos_compliment(
-        int(user_num1)
-    ), get_twos_compliment(int(user_num2))
+        user_num1
+    ), get_twos_compliment(user_num2)
     bin_sum = get_bin_sum(processed_num1, processed_num2)
     bin_difference = get_bin_sum(processed_num1, get_opposite_bin(processed_num2))
     print(
