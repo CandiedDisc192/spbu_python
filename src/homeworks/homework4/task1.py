@@ -6,11 +6,10 @@ def clean_leading_trash(bin_num: str):
 def get_positive_bin(num: int):
     result = ""
     num = abs(num)
-    while True:
+    while num != 0:
         result = str(num % 2) + result
         num //= 2
-        if num == 0:
-            return result
+    return result if result else "0"
 
 
 def invert_bin(bin_num: str):
