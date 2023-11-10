@@ -19,10 +19,6 @@ def decode_string(string: str) -> str:
     if not string.isalnum():
         raise ValueError("Given string contains unnecessary symbols")
     letters = list(filter(lambda x: x.isalpha(), string))
-    if not all(map(lambda x: len(x) == 1, letters)):
-        raise ValueError(
-            "Incorrect encoding format: more than one character before quantity"
-        )
     counts = "".join(map(lambda x: x if x.isdigit() else " ", string)).split()
     if len(letters) != len(counts):
         raise ValueError(
