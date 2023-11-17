@@ -24,9 +24,9 @@ def get_opposite_bin(bin_num: str) -> str:
     return get_bin_sum(invert_bin(bin_num), "01")
 
 
-def get_bin_sum(max_bin: str, min_bin: str) -> str:
+def get_bin_sum(bin1: str, bin2: str) -> str:
     outcomes = ("00", "01", "10", "11")
-    min_bin, max_bin = sorted((max_bin, min_bin), key=len)
+    min_bin, max_bin = sorted((bin1, bin2), key=len)
     min_bin = add_leading_digits(min_bin, len(max_bin) - len(min_bin))
     sum_bin, previous_overflow = "", "0"
     for i in range(len(max_bin) - 1, -1, -1):
