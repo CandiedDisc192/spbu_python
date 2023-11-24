@@ -21,4 +21,3 @@ def print_usage_statistic(function):
 
     for call_info in function.calls_info:
         yield call_info
-
