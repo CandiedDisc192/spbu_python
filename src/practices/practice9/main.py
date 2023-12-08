@@ -1,8 +1,8 @@
 from FSM import *
 
 
-def create_fsm1():
-    state_table1 = {
+def next_state1(cur_state: int, symbol: str) -> int:
+    states_map = {
         (0, "a"): 1,
         (0, "b"): 0,
         (1, "a"): 1,
@@ -12,14 +12,14 @@ def create_fsm1():
         (3, "a"): 1,
         (3, "b"): 0,
     }
-    return create_fs_machine([0, 1, 2, 3], ["a", "b"], 0, [3], state_table1)
+    return states_map[(cur_state, symbol)]
 
 
 def main():
-    first_fsm = create_fsm1()
+    first_fsm = create_fs_machine([0, 1, 2, 3], ["a", "b"], next_state1, 0, [3])
     user_string = input("Enter any string: ")
     if validate_string(first_fsm, user_string):
-        print("Your string belongs to the first language: (a|b)*abb")
+        print("Your string belongs to first language: (a|b)*abb")
     else:
         print("Language was not found")
 
