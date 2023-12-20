@@ -60,11 +60,10 @@ def main():
     if not (0 < user_size <= 1000):
         print("Size must be positive, max size is 1000")
         return
-    while True:
+    user_stop = "1"
+    while user_stop == "1":
         print(get_representation(random_generation(user_size)))
         user_stop = input("Enter 1 to continue, any other symbol to stop: ")
-        if user_stop != "1":
-            break
 
 
 if __name__ == "__main__":
