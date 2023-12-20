@@ -32,14 +32,6 @@ def is_horizontal_symmetric(sprite):
     return True
 
 
-def string_to_sprite(string):
-    string = string.rstrip("\n")
-    sprite = []
-    for row in string.split("\n"):
-        sprite.append([s for s in row])
-    return sprite
-
-
 @pytest.mark.parametrize("size", [1, 2, 3, 4, 5, 6, 7, 8, 9])
 def test_get_vertical_sprite(size):
     assert is_vertical_symmetric(get_vertical_sprite(size))
