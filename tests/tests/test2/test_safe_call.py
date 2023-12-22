@@ -99,7 +99,7 @@ def test_safe_inverse(bin_n, expected):
         (
             "9999",
             f"\nError in function inverse.\nFile {__file__}\nType: ValueError\nMessage: Arg is not binary\n"
-            f'On line 57: raise ValueError("Arg is not binary")',
+            f'On line 72: raise ValueError("Arg is not binary")',
         )
     ],
 )
