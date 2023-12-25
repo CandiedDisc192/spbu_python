@@ -1,4 +1,4 @@
-from FSM import *
+from src.practices.practice9.FSM import *
 
 
 def next_state1(cur_state: int, symbol: str) -> int:
