@@ -1,28 +1,29 @@
 from dataclasses import dataclass
-from typing import Any, Callable
 
 
 @dataclass
 class FSMachine:
-    states: list
-    inputs: list
-    transition_func: Callable
-    initial_state: Any
-    final_states: list
+    transition_table: dict[int, dict[str, int]]
+    initial_state: int
+    final_states: list[int]
+    name: str
+    pattern: str
 
 
 def create_fs_machine(
-    states: list, inputs: list, trans_func: Callable, initial_state, final_states: list
+    trans_table: dict[int, dict[str, int]],
+    initial_state,
+    final_states: list[int],
+    fsm_name: str,
+    fsm_pattern: str,
 ) -> FSMachine:
-    return FSMachine(states, inputs, trans_func, initial_state, final_states)
+    return FSMachine(trans_table, initial_state, final_states, fsm_name, fsm_pattern)
 
 
-def validate_string(fsm: FSMachine, string: str, fail_state="FAIL_STATE") -> bool:
+def validate_string(fsm: FSMachine, string: str) -> bool:
     current_state = fsm.initial_state
     for symbol in string:
-        if symbol not in fsm.inputs:
-            return False
-        current_state = fsm.transition_func(current_state, symbol)
-        if current_state == fail_state:
+        current_state = fsm.transition_table[current_state].get(symbol)
+        if current_state is None:
             return False
     return current_state in fsm.final_states

@@ -1,52 +1,55 @@
 from src.practices.practice9.FSM import *
 
 
-def next_state1(cur_state: int, symbol: str) -> int:
-    states_map = {
-        (0, "a"): 1,
-        (0, "b"): 0,
-        (1, "a"): 1,
-        (1, "b"): 2,
-        (2, "a"): 1,
-        (2, "b"): 3,
-        (3, "a"): 1,
-        (3, "b"): 0,
+def create_fsm1() -> FSMachine:
+    trans_rule = {
+        0: {"a": 1, "b": 0},
+        1: {"a": 1, "b": 2},
+        2: {"a": 1, "b": 3},
+        3: {"a": 1, "b": 0},
     }
-    return states_map[(cur_state, symbol)]
+    start_state = 0
+    end_states = [3]
+    return create_fs_machine(trans_rule, start_state, end_states, "first", "(a|b)*abb")
 
 
-def next_state2(cur_state: int, symbol: str) -> int:
-    # lists indexes correspond to states
-    compare_with = [[], [".", "E"], [], ["E"], ["+", "-"], [], []]
-    paths_from_states = [[1], [1, 2, 4], [3], [3, 4], [6, 5, 5], [6], [6]]
-    state_paths = paths_from_states[cur_state]
-    state_checks = compare_with[cur_state]
-    if symbol.isdigit():
-        return state_paths[0]
-    for i in range(len(state_checks)):
-        if symbol == state_checks[i]:
-            return state_paths[i + 1]
-    return -1
+def create_fsm2() -> FSMachine:
+    def digits_to(next_state: int) -> dict[str, int]:
+        return {str(i): next_state for i in range(10)}
 
-
-def main():
-    first_fsm = create_fs_machine([0, 1, 2, 3], ["a", "b"], next_state1, 0, [3])
-    second_fsm = create_fs_machine(
-        [0, 1, 2, 3, 4, 5, 6],
-        [*(str(n) for n in range(10)), ".", "E", "+", "-"],
-        next_state2,
-        0,
-        [1, 3, 6],
+    trans_rule = {
+        0: digits_to(1),
+        1: {**digits_to(1), ".": 2, "E": 4},
+        2: digits_to(3),
+        3: {**digits_to(3), "E": 4},
+        4: {**digits_to(6), "+": 5, "-": 5},
+        5: digits_to(6),
+        6: digits_to(6),
+    }
+    start_state = 0
+    end_states = [1, 3, 6]
+    return create_fs_machine(
+        trans_rule,
+        start_state,
+        end_states,
+        "second",
+        "digit+(.digit+)?(E(+|-)?digit+)?",
     )
+
+
+def recognize_language(input_string: str, fsm_lst: list[FSMachine]) -> str:
+    for fsm in fsm_lst:
+        if validate_string(fsm, input_string):
+            return f"Your string belongs to {fsm.name} language: {fsm.pattern}"
+    return "Language was not found"
+
+
+def main() -> None:
+    fsm1 = create_fsm1()
+    fsm2 = create_fsm2()
+    fsm_list = [fsm1, fsm2]
     user_string = input("Enter any string: ")
-    if validate_string(first_fsm, user_string):
-        print("Your string belongs to first language: (a|b)*abb")
-    elif validate_string(second_fsm, user_string, -1):
-        print(
-            "Your string belongs to second language: digit+(.digit+)?(E(+|-)?digit+)?"
-        )
-    else:
-        print("Language was not found")
+    print(recognize_language(user_string, fsm_list))
 
 
 if __name__ == "__main__":

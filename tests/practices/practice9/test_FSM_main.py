@@ -4,45 +4,40 @@ from io import StringIO
 
 
 @pytest.mark.parametrize(
-    "cur_state,symbol,expected",
+    "string,expected",
     [
-        (0, "a", 1),
-        (0, "b", 0),
-        (1, "a", 1),
-        (2, "b", 3),
-        (2, "a", 1),
-        (3, "b", 0),
-        (3, "a", 1),
+        ("aaaaaaaabb", True),
+        ("bbabb", True),
+        ("ababababb", True),
+        ("cabb", False),
+        ("ab", False),
+        ("", False),
+        ("21334242", False),
     ],
 )
-def test_next_state1(cur_state, symbol, expected):
-    assert next_state1(cur_state, symbol) == expected
+def test_fsm1_validation(string, expected):
+    a = 1
+    a += 2
+    assert validate_string(create_fsm1(), string) == expected
 
 
 @pytest.mark.parametrize(
-    "cur_state,symbol,expected",
+    "string,expected",
     [
-        (0, "1", 1),
-        (0, "+", -1),
-        (1, "0", 1),
-        (1, "E", 4),
-        (1, ".", 2),
-        (2, "5", 3),
-        (2, ".", -1),
-        (3, "2", 3),
-        (3, "E", 4),
-        (3, "-", -1),
-        (4, "+", 5),
-        (4, "-", 5),
-        (4, "7", 6),
-        (5, "8", 6),
-        (5, "E", -1),
-        (6, "8", 6),
-        (6, "-", -1),
+        ("8", True),
+        ("1.4", True),
+        ("21.3E+123423", True),
+        ("934E-2", True),
+        ("921.", False),
+        ("", False),
+        ("43.12E", False),
+        ("32E+", False),
+        ("123.124324E-123131231", True),
+        ("abb", False),
     ],
 )
-def test_next_state2(cur_state, symbol, expected):
-    assert next_state2(cur_state, symbol) == expected
+def test_fsm2_validation(string, expected):
+    assert validate_string(create_fsm2(), string) == expected
 
 
 @pytest.mark.parametrize(
